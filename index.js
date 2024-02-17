@@ -18,6 +18,7 @@ function logger({ getState }) {
     return returnValue
   }
 }
+
 const initialState = {
   value: 0,
 }
