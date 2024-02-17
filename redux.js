@@ -1,6 +1,8 @@
+// reducer：传入初始状态和计算逻辑
+// enhancer：传入增强函数，比如中间件
 function createStore(reducer, enhancer) {
   if (enhancer) {
-    return enhancer(createStore(reducer))
+    return enhancer(createStore)(reducer)
   }
   // 初始化状态
   let state = reducer(undefined, { type: '__INIT__' })

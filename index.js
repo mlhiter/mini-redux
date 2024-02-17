@@ -7,11 +7,11 @@ function sideEffects({ getState, dispatch }) {
   }
 }
 
-function logger({ getState, dispatch }) {
-  return (action) => {
+function logger({ getState }) {
+  return (next) => (action) => {
     console.log('will dispatch', action)
 
-    const returnValue = dispatch(action)
+    const returnValue = next(action)
 
     console.log('state after dispatch', getState())
 
