@@ -1,3 +1,23 @@
+function sideEffects({ getState, dispatch }) {
+  return (next) => (action) => {
+    if (typeof action === 'function') {
+      return action(dispatch, getState)
+    }
+    return next(action)
+  }
+}
+
+function logger({ getState, dispatch }) {
+  return (action) => {
+    console.log('will dispatch', action)
+
+    const returnValue = dispatch(action)
+
+    console.log('state after dispatch', getState())
+
+    return returnValue
+  }
+}
 const initialState = {
   value: 0,
 }
@@ -15,7 +35,10 @@ function counterReducer(state = initialState, action) {
 }
 
 // redux模型里应该只有一个store，它负责跟踪当前状态，使用reducer更新它相应action dispatches并且通知订阅者。
-const store = Redux.createStore(counterReducer)
+const store = Redux.createStore(
+  counterReducer,
+  Redux.applyMiddleware(sideEffects, logger)
+)
 
 const valueEl = document.getElementById('value')
 
